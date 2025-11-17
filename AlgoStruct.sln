@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Algo", "Algo\Algo.csproj", "{82F85092-BBCE-477F-9F16-934CBBA3A3BC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Execute", "Execute\Execute.csproj", "{468AAD6D-31BA-476D-9AA6-20C7E9254971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Structures", "Structures\Structures.csproj", "{13E57B92-4DF2-4861-9FF1-984109A37691}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82F85092-BBCE-477F-9F16-934CBBA3A3BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82F85092-BBCE-477F-9F16-934CBBA3A3BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82F85092-BBCE-477F-9F16-934CBBA3A3BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82F85092-BBCE-477F-9F16-934CBBA3A3BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{468AAD6D-31BA-476D-9AA6-20C7E9254971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{468AAD6D-31BA-476D-9AA6-20C7E9254971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{468AAD6D-31BA-476D-9AA6-20C7E9254971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{468AAD6D-31BA-476D-9AA6-20C7E9254971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13E57B92-4DF2-4861-9FF1-984109A37691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13E57B92-4DF2-4861-9FF1-984109A37691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13E57B92-4DF2-4861-9FF1-984109A37691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13E57B92-4DF2-4861-9FF1-984109A37691}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

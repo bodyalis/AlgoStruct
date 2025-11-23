@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 
 namespace Execute;
@@ -14,17 +15,16 @@ public static partial class  Program
 
     public static void TestHuffman()
     {
-
-        List<byte[]> list = new List<byte[]>();
-        while (true)
-        {
-            byte[] b = new byte[1_000_000];
-            Thread.Sleep(100);
-            list.Add(b);
-        }
+        
         string s = "beep boop beer!";
-        string huffman = HuffmanAlgo.Encode(s);
+        Stream huffman = HuffmanAlgo.Encode(s);
+
+        huffman.Position = 0;
+        
         
         Console.WriteLine(huffman);
+
+        string s2 = HuffmanAlgo.Decode(huffman);
+        Console.WriteLine(s2);
     }
 }

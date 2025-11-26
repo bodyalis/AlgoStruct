@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Structures;
@@ -9,7 +10,7 @@ namespace Structures;
 /// <typeparam name="TValue"></typeparam>
 public class LruCache<TKey, TValue> where TKey : notnull
 {
-    class LruNode
+    private class LruNode
     {
         public TKey Key { get; private set; }
         public TValue Value { get; private set; }
@@ -26,10 +27,10 @@ public class LruCache<TKey, TValue> where TKey : notnull
         }
     }
 
-    private readonly LinkedList<LruNode> _list = new LinkedList<LruNode>();
+    private readonly LinkedList<LruNode> _list = new ();
     private readonly Dictionary<TKey, LruNode> _dictionary;
     private int _capacity;
-    
+
     public int Capacity => _capacity;
     public int Count => _list.Count;
 
@@ -66,12 +67,12 @@ public class LruCache<TKey, TValue> where TKey : notnull
         {
             while (_list.Count > newCapacity)
             {
-                var lastNode = _list.Last!.Value;
+                LruNode lastNode = _list.Last!.Value;
                 _dictionary.Remove(lastNode.Key);
                 _list.RemoveLast();
             }
         }
-        
+
         _capacity = newCapacity;
     }
 
@@ -124,9 +125,9 @@ public class LruCache<TKey, TValue> where TKey : notnull
         return _dictionary.ContainsKey(key);
     }
 
-    public bool TryGetValue(TKey key, out TValue? value)
+    public bool TryGetValue(TKey key, [MaybeNullWhen(false)] out TValue value)
     {
-        value = default;
+        value = default (TValue);
         if (_dictionary.TryGetValue(key, out LruNode? node))
         {
             UpdateNodePosition(node);
@@ -139,13 +140,11 @@ public class LruCache<TKey, TValue> where TKey : notnull
 
     public TValue Get(TKey key)
     {
-        if (_dictionary.TryGetValue(key, out LruNode? node))
+        if (!TryGetValue(key, out TValue? value)) 
         {
-            _list.Remove(node);
-            _list.AddFirst(node);
-            return node.Value;
+            throw new KeyNotFoundException(key.ToString());
         }
-
-        throw new KeyNotFoundException(key.ToString());
+        
+        return value;
     }
 }

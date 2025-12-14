@@ -1,4 +1,4 @@
-namespace HuffmanAlgorithm.Univer.Lab_1;
+namespace Algo.Univer.Lab_1;
 
 public class Task_2
 {

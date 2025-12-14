@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using HuffmanAlgorithm.Univer.Lab_1;
+using Algo;
+using Algo.Univer.Lab_1;
+using Algo.Univer.Lab_2;
 
 namespace Execute;
 
@@ -22,12 +24,24 @@ public static partial class Program
         //     Console.WriteLine($"Предмет {tuple.item.Id}: {tuple.fraction:P1} ({tuple.item.Weight * tuple.fraction:F0} веса)");
         // }
 
-        var t2 = new Task_2();
-        List<(Task_2.Coin coin, int count)> result2 = t2.Solve();
-        foreach (var tuple2 in result2)
-        {
-            Console.WriteLine($"Монета {tuple2.coin.Value} - {tuple2.count}");
-        }
+        // var t2 = new Task_2();
+        // List<(Task_2.Coin coin, int count)> result2 = t2.Solve();
+        // foreach (var tuple2 in result2)
+        // {
+        //     Console.WriteLine($"Монета {tuple2.coin.Value} - {tuple2.count}");
+        // }
+
+        var t5 = new Task_5();
+        t5.Solve();
+
+        // Algo.Univer.Lab_2.Task_1.ShowInt(15); //15
+        // Algo.Univer.Lab_2.Task_1.ShowIntBytes(15); //0F 00 00 00
+        //
+        // Algo.Univer.Lab_2.Task_2.ShowIntBinary(7); // 00000000 00000000 00000000 00000111 
+        //
+        // Algo.Univer.Lab_2.Task_2.ShowIntHex(255); //0x000000FF
+
+
     }
 
     public static void TestHuffman()

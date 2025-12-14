@@ -1,4 +1,4 @@
-namespace HuffmanAlgorithm.Univer.Lab_1;
+namespace Algo.Univer.Lab_1;
 
 // Дано множество предметов. Каждый предмет характеризуется двумя
 // параметрами:
@@ -39,10 +39,6 @@ public class Task_1
     };
     
     private const int MaxCapacity = 135;
-    public Task_1()
-    {
-        
-    }
 
     public List<(Item item, double fraction)> Solve()
     {

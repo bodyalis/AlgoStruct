@@ -146,8 +146,8 @@ public static class HuffmanAlgo
 
         while (queue.Count > 1)
         {
-            HuffmanNode left = queue.Dequeue();
-            HuffmanNode right = queue.Dequeue();
+            HuffmanNode left = queue.Dequeue().Element;
+            HuffmanNode right = queue.Dequeue().Element;
 
             HuffmanNode parent = new()
             {
@@ -158,7 +158,7 @@ public static class HuffmanAlgo
             };
             queue.Enqueue(parent, parent.Frequency);
         }
-        HuffmanNode root = queue.Dequeue();
+        HuffmanNode root = queue.Dequeue().Element;
         return root;
     }
 

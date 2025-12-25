@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using HuffmanAlgorithm;
 
 namespace Execute;
 
@@ -11,7 +12,14 @@ public static partial class Program
     public static void Main()
     {
         // TestPriorityQeueue();
-        Program.TestHuffman();
+        // Program.TestHuffman();
+        
+        // var unionFind = new UnionFind(5);
+        // unionFind.Union(1, 2);
+        // unionFind.Union(3, 4);
+        // unionFind.Union(2, 3);
+        object o = (int)ProcessingWay.None;
+        Console.WriteLine(o.ToString());
     }
 
     public static void TestHuffman()
@@ -30,4 +38,11 @@ public static partial class Program
 
         Debug.Assert(s == s2);
     }
+}
+
+public enum ProcessingWay
+{
+    None = 0,
+    Forward = 1,
+    Backward = 2,
 }

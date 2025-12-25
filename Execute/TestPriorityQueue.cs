@@ -8,17 +8,36 @@ public static partial class Program
     private static void TestPriorityQeueue()
     {
 
-        Structures.PriorityQueue<string, int> q = new (default (IComparer<int>));
+        Structures.PriorityQueue<string, int> q = new (Comparer<int>.Default);
         q.Enqueue("т", 6);
+
         q.Enqueue("и", 2);
+
+        
         q.Enqueue("в", 4);
+
+        
         q.Enqueue("е", 5);
+
+        
         q.Enqueue("П", 0);
+
+        
         q.Enqueue("р", 1);
+
+        
         q.Enqueue("р", 1);
+
+        
         q.Enqueue("р", 1);
+
+        
         q.Enqueue("е", 5);
+
+        
         q.Enqueue("и", 2);
+
+        
 
         while (q.Count > 0)
         {

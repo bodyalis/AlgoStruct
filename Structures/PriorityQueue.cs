@@ -1,193 +1,129 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Structures;
 
-public class PriorityQueue<TElement, TPriority> : IPriorityQueue<TElement, TPriority> where TPriority : IComparable<TPriority>
+public class PriorityQueue<TElement, TPriority>
+    where TPriority : IComparable<TPriority>
 {
-    private readonly Lazy<List<(TElement Value, TPriority Priority)>> _queue = new ();
     private readonly IComparer<TPriority> _comparer;
-    public int Count => _queue.Value.Count;
+    private readonly List<(TElement Element, TPriority Priority)> _elements = new List<(TElement, TPriority)>();
+    
+    // parent = (i - 1) / 2
+    // left = 2 * i + 1;
+    // right = 2 * i + 2;
 
-    public PriorityQueue(IComparer<TPriority> priorityComparer)
+    public int Count => _elements.Count;
+    
+    public PriorityQueue(IComparer<TPriority>? comparer = null)
     {
-        _comparer = priorityComparer ?? Comparer<TPriority>.Default;
+        _comparer = comparer ?? Comparer<TPriority>.Default;
     }
-
-    public void Enqueue(TElement element, TPriority priority)
-    {
-        _queue.Value.Add((element, priority));
-        HeapifyUp(_queue.Value.Count - 1);
-    }
-
-    public TElement Dequeue()
-    {
-        if (_queue.Value.Count == 0)
-        {
-            throw new IndexOutOfRangeException();
-        }
-
-        (TElement Value, TPriority Priority) element = _queue.Value[0];
-
-        _queue.Value[0] = _queue.Value[^1];
-        _queue.Value.RemoveAt(_queue.Value.Count - 1);
-
-        if (_queue.Value.Count > 0)
-        {
-            HeapifyDown(0);
-        }
-
-        return element.Value;
-    }
-
-    public bool TryDequeue(out TElement element, out TPriority priority)
-    {
-        if (_queue.Value.Count == 0)
-        {
-            element = default (TElement);
-            priority = default (TPriority);
-            return false;
-        }
-
-        (element, priority) = _queue.Value[0];
-
-        _queue.Value[0] = _queue.Value[^1];
-        _queue.Value.RemoveAt(_queue.Value.Count - 1);
-
-        if (_queue.Value.Count > 0)
-        {
-            HeapifyDown(0);
-        }
-
-        return true;
-    }
-
-    public TElement Peek()
-    {
-        if (_queue.Value.Count == 0)
-        {
-            throw new InvalidOperationException("Очередь пуста");
-        }
-
-        return _queue.Value[0].Value;
-    }
-
-    public bool TryPeek(out TElement element, out TPriority priority)
-    {
-        if (_queue.Value.Count == 0)
-        {
-            element = default (TElement);
-            priority = default (TPriority);
-            return false;
-        }
-
-        (element, priority) = _queue.Value[0];
-        return true;
-    }
-
-    // l => i * 2 + 1
-    // r => i * 2 + 2
-    // p => (i - 1) / 2 (на цело делить)
-
+    
     private void HeapifyUp(int index)
     {
-        // Поднимаем пока будет больше чем родительский
-
-        while (index > 0)
+        while (index >= 1)
         {
-            int parentIdx = (index - 1) / 2;
+            int parent = (index - 1) / 2;
 
-            if (ComparePriority(index, parentIdx) >= 0)
+            if (_comparer.Compare(_elements[index].Priority, _elements[parent].Priority) > 0)
             {
                 break;
             }
-
-            Swap(index, parentIdx);
-            index = parentIdx;
+            
+            (_elements[index], _elements[parent]) = (_elements[parent], _elements[index]);
+            index = parent;
         }
-
     }
 
-    private int ComparePriority(int idx1, int idx2)
-    {
-        TPriority c1 = _queue.Value[idx1].Priority;
-        TPriority c2 = _queue.Value[idx2].Priority;
-        int res = _comparer.Compare(c1, c2);
-
-        return res;
-    }
-
-    // Опускаем пока приоритет родителя меньше приоритета 
     private void HeapifyDown(int index)
     {
-
+        int smallestIndex = index;
         while (true)
         {
+            int leftChild = 2 * index + 1;
+            int rightChind = 2 * index + 2;
 
-            int leftChildIndex = index * 2 + 1;
-            int rightChildIndex = index * 2 + 2;
-            int smallestIndex = index;
-
-            if (leftChildIndex < _queue.Value.Count
-                && ComparePriority(leftChildIndex, smallestIndex) < 0)
+            if (leftChild < _elements.Count
+                && _comparer.Compare(_elements[leftChild].Priority, _elements[smallestIndex].Priority) < 0)
             {
-                smallestIndex = leftChildIndex;
+                smallestIndex = leftChild;
             }
 
-            if (rightChildIndex < _queue.Value.Count
-                && ComparePriority(rightChildIndex, smallestIndex) < 0)
+            if (rightChind < _elements.Count
+                && _comparer.Compare(_elements[rightChind].Priority, _elements[smallestIndex].Priority) < 0)
             {
-                smallestIndex = rightChildIndex;
+                smallestIndex = rightChind;
             }
-
-            if (smallestIndex == index)
+            
+            if (index == smallestIndex)
             {
                 break;
             }
-
-            Swap(index, smallestIndex);
+            
+            (_elements[index], _elements[smallestIndex]) = (_elements[smallestIndex], _elements[index]);
             index = smallestIndex;
         }
-
-
     }
-
-    private void Swap(int idx1, int idx2)
+    
+    public void Enqueue(TElement element, TPriority priority)
     {
-        (_queue.Value[idx1], _queue.Value[idx2]) = (_queue.Value[idx2], _queue.Value[idx1]);
+        _elements.Add((element, priority));
+        HeapifyUp(_elements.Count - 1);
     }
-}
-public interface IPriorityQueue<TElement, TPriority> where TPriority : IComparable<TPriority>
-{
-    /// <summary>
-    /// Добавление элемента с приоритетом
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="priority"></param>
-    public void Enqueue(TElement element, TPriority priority);
 
-    /// <summary>
-    /// Извлечение элемента с наивысшим приоритетом (минимальным значением)
-    /// </summary>
-    /// <returns></returns>
-    public TElement Dequeue();
+    public (TElement Element, TPriority Priority) Dequeue()
+    {
+        if (_elements.Count == 0)
+        {
+            throw new Exception("Empty queue");
+        }        
+        
+        var result = _elements[0];
+        
+        _elements[0] = _elements[^1];
+        _elements.RemoveAt(_elements.Count - 1);
 
-    /// <summary>
-    /// Извлечение элемента с наивысшим приоритетом (минимальным значением)
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="priority"></param>
-    /// <returns></returns>
-    public bool TryDequeue(out TElement element, out TPriority priority);
+        if (_elements.Count > 1)
+        {
+            HeapifyDown(0);
+        }
 
-    /// <summary>
-    /// Просмотр элемента с наивысшим приоритетом (минимальным значением)
-    /// </summary>
-    /// <returns></returns>
-    public TElement Peek();
+        return result;
+    }
 
-    /// <summary>
-    /// Просмотр элемента с наивысшим приоритетом (минимальным значением)
-    /// </summary>
-    /// <param name="element"></param>
-    /// <param name="priority"></param>
-    /// <returns></returns>
-    public bool TryPeek(out TElement element, out TPriority priority);
+    public bool TryDequeue([MaybeNullWhen(false)] out TElement element,[MaybeNullWhen(false)] out TPriority priority)
+    {
+        element = default;
+        priority = default;
+        if (_elements.Count == 0)
+        {
+            return false;
+        }
+
+        (element, priority) = Dequeue();
+        return true;
+    }
+
+    public (TElement, TPriority) Peek()
+    {
+        if (_elements.Count == 0)
+        {
+            throw new Exception("Empty queue");
+        }
+        
+        return _elements[0];
+    }
+
+    public bool TryPeek([MaybeNullWhen(false)] out TElement element, [MaybeNullWhen(false)] out TPriority priority)
+    {
+        element  = default;
+        priority = default;
+        if (_elements.Count == 0)
+        {
+            return false;
+        }
+        
+        (element, priority) = Peek();
+        return true;
+    }
 }

@@ -5,7 +5,7 @@
         <LangVersion>latestmajor</LangVersion>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>HuffmanAlgorithm</RootNamespace>
+        <RootNamespace>Algo</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

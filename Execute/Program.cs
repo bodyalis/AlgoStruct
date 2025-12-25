@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using Algo;
 using HuffmanAlgorithm;
 
 namespace Execute;
